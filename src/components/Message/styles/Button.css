@@ -1,0 +1,15 @@
+.inputButton {
+    width: 150px;
+    height: 40px;
+    border-radius: 5px;
+    border: 0px;
+    background-color: rgb(212, 197, 197);
+    color: white;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.inputButton:hover {
+    background-color: #555;
+    cursor: pointer;
+}

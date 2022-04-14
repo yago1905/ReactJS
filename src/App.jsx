@@ -1,13 +1,7 @@
 import React from 'react';
-import { Massage } from './components/Message/Message';
 import './App.css';
+import { Form } from './components/Message/Form';
 
 export const App = () => {
-  return <>
-  <div >
-    <h1 className='wrapper'>ReactJS</h1>
-  <Massage />
-  </div>
-  </>
-}
-
+  return <Form />;
+};
