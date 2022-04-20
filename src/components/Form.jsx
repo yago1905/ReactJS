@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import './styles/Form.css';
-import { Message } from './Message';
-import { Input } from './Input';
-import { Button } from './Button';
+import './Form.css';
+import { Message } from './Message/Message';
+import { Input } from './Input/Input';
+import { Button } from './Button/Button';
 
 export const Form = () => {
   const [value, setValue] = useState('');
@@ -10,6 +10,7 @@ export const Form = () => {
 
   const handleClick = () => {
     setMessage(value);
+    setValue('');
   };
 
   const handleChange = (e) => {

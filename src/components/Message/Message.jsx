@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles/Message.css';
+import './Message.css';
 
 export const Message = (props) => {
   return <div className="message">{props.message}</div>;
