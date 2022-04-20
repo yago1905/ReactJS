@@ -1,9 +1,6 @@
-import React, { useState } from 'react';
-import { MassageText } from './MassageText';
-import './massage.css';
+import React from 'react';
+import './styles/Message.css';
 
-export const Massage = () => {
-    return <>
-        <MassageText name='Первый проект на ReactJS'/>
-        </>
-}
+export const Message = (props) => {
+  return <div className="message">{props.message}</div>;
+};
