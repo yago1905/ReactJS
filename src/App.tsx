@@ -1,58 +1,48 @@
-import React, { FC, useState, useEffect, useCallback } from 'react';
-import { nanoid } from 'nanoid';
-
-import { Form } from './components/Form';
-import { MessageList } from './components/MessageList';
-import { AUTHOR } from './constants';
+import React, { FC, useState } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import './App.scss';
+import { ChatList } from './components/ChatList';
+import { Header } from './components/Header';
+import { Chats } from './pages/Chats';
+import { Home } from './pages/Home';
+import { Profile } from './pages/Profile';
 
-interface Message {
+export interface Chat {
   id: string;
-  author: string;
-  value: string;
+  name: string;
 }
 
+const initialChats: Chat[] = [
+  {
+    id: '1',
+    name: 'chat',
+  },
+];
+
 export const App: FC = () => {
-  const [messages, setMessages] = useState<Message[]>([]);
-
-  useEffect(() => {
-    if (
-      messages.length > 0 &&
-      messages[messages.length - 1].author !== AUTHOR.BOT
-    ) {
-      const timeout = setTimeout(() => {
-        setMessages([
-          ...messages,
-          {
-            id: nanoid(),
-            author: AUTHOR.BOT,
-            value: 'Im BOT',
-          },
-        ]);
-      }, 1000);
-
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [messages]);
-
-  const addMessage = useCallback((value: string) => {
-    setMessages((prevMessage) => [
-      ...prevMessage,
-      {
-        id: nanoid(),
-        author: AUTHOR.USER,
-        value,
-      },
-    ]);
-  }, []);
+  const [chatList, setChatList] = useState<Chat[]>(initialChats);
 
   return (
-    <>
-      <MessageList messages={messages} />
-      <Form addMessage={addMessage} />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Header />}>
+          <Route index element={<Home />} />
+          <Route path="profile" element={<Profile />} />
+
+          <Route path="chats">
+            <Route
+              index
+              element={<ChatList chatList={chatList} onAddChat={setChatList} />}
+            />
+            <Route
+              path=":chatId"
+              element={<Chats chatList={chatList} onAddChat={setChatList} />}
+            />
+          </Route>
+        </Route>
+        <Route path="*" element={<h2>404</h2>} />
+      </Routes>
+    </BrowserRouter>
   );
 };
