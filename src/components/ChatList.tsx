@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Chat } from '../App';
 import { nanoid } from 'nanoid';
 import { ListItem } from '@mui/material';
+import style from './Chat.module.scss';
 
 interface ChatListProps {
   chatList: Chat[];
@@ -33,8 +34,15 @@ export const ChatList: FC<ChatListProps> = ({
       <ul>
         {chatList.map((chat) => (
           <ListItem key={chat.id}>
-            <Link to={`/chats/${chat.name}`}>{chat.name}</Link>
-            <button onClick={() => onDeleteChat(chat.name)}>X</button>
+            <Link className={style.title} to={`/chats/${chat.name}`}>
+              {chat.name}
+            </Link>
+            <button
+              className={style.delete}
+              onClick={() => onDeleteChat(chat.name)}
+            >
+              X
+            </button>
           </ListItem>
         ))}
       </ul>

@@ -1,7 +1,6 @@
 import React, { FC, useMemo, useState } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
-import './App.scss';
 import { ChatList } from './components/ChatList';
 import { Header } from './components/Header';
 import { AUTHOR } from './constants';

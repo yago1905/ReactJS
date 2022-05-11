@@ -26,14 +26,16 @@ export const Header: FC = () => (
         display: 'flex',
         justifyContent: 'space-around',
         listStyleType: 'none',
-        textDecoration: 'none',
       }}
     >
       {navigate.map((link) => (
         <li key={link.id}>
           <NavLink
             to={link.to}
-            style={({ isActive }) => ({ color: isActive ? 'green' : 'blue' })}
+            style={({ isActive }) => ({
+              color: isActive ? 'green' : 'blue',
+              textDecoration: 'none',
+            })}
           >
             {link.name}
           </NavLink>
