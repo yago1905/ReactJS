@@ -21,7 +21,14 @@ const navigate = [
 
 export const Header: FC = () => (
   <header>
-    <ul>
+    <ul
+      style={{
+        display: 'flex',
+        justifyContent: 'space-around',
+        listStyleType: 'none',
+        textDecoration: 'none',
+      }}
+    >
       {navigate.map((link) => (
         <li key={link.id}>
           <NavLink

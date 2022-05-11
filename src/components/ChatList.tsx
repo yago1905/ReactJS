@@ -2,24 +2,23 @@ import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Chat } from '../App';
 import { nanoid } from 'nanoid';
+import { ListItem } from '@mui/material';
 
 interface ChatListProps {
   chatList: Chat[];
-  onAddChat: (chats: Chat[]) => void;
+  onAddChat: (chats: Chat) => void;
 }
 
 export const ChatList: FC<ChatListProps> = ({ chatList, onAddChat }) => {
   const [name, setName] = useState('');
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     if (name) {
-      onAddChat([
-        ...chatList,
-        {
-          id: nanoid(),
-          name,
-        },
-      ]);
+      onAddChat({
+        id: nanoid(),
+        name,
+      });
 
       setName('');
     }
@@ -28,9 +27,9 @@ export const ChatList: FC<ChatListProps> = ({ chatList, onAddChat }) => {
     <>
       <ul>
         {chatList.map((chat) => (
-          <li key={chat.id}>
-            <Link to={`/chats/${chat.id}`}>{chat.name}</Link>
-          </li>
+          <ListItem key={chat.id}>
+            <Link to={`/chats/${chat.name}`}>{chat.name}</Link>
+          </ListItem>
         ))}
       </ul>
       <form onSubmit={handleSubmit}>
