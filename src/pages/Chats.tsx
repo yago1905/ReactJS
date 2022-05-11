@@ -12,6 +12,7 @@ interface ChatsProps {
   setMessages: React.Dispatch<React.SetStateAction<Messages>>;
   chatList: Chat[];
   onAddChat: (chats: Chat) => void;
+  onDeleteChat: (chatName: string) => void;
 }
 
 export const Chats: FC<ChatsProps> = ({
@@ -19,6 +20,7 @@ export const Chats: FC<ChatsProps> = ({
   onAddChat,
   messages,
   setMessages,
+  onDeleteChat,
 }) => {
   const { chatId } = useParams();
 
@@ -46,7 +48,7 @@ export const Chats: FC<ChatsProps> = ({
         clearTimeout(timeout);
       };
     }
-  }, [messages]);
+  }, [chatId, messages, setMessages]);
 
   const addMessage = useCallback(
     (value: string) => {
@@ -64,7 +66,7 @@ export const Chats: FC<ChatsProps> = ({
         }));
       }
     },
-    [chatId]
+    [chatId, setMessages]
   );
 
   if (!chatList.find((chat) => chat.name === chatId)) {
@@ -73,7 +75,11 @@ export const Chats: FC<ChatsProps> = ({
 
   return (
     <>
-      <ChatList chatList={chatList} onAddChat={onAddChat} />
+      <ChatList
+        chatList={chatList}
+        onAddChat={onAddChat}
+        onDeleteChat={onDeleteChat}
+      />
       <MessageList messages={chatId ? messages[chatId] : []} />
       <Form addMessage={addMessage} />
     </>
