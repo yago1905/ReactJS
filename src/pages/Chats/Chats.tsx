@@ -1,11 +1,14 @@
 import React, { FC, useCallback, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import { nanoid } from 'nanoid';
-import { Chat, Messages } from '../App';
-import { ChatList } from '../components/ChatList';
-import { Form } from '../components/Form';
-import { MessageList } from '../components/MessageList';
-import { AUTHOR } from '../constants';
+import { Chat, Messages } from '../../App';
+import { ChatList } from '../../components/ChatList';
+import { Form } from '../../components/Form';
+import { MessageList } from '../../components/MessageList';
+import { AUTHOR } from '../../constants';
+import { WithClasses } from '../../HOC/WithClasses';
+
+import style from './Chats.module.css';
 
 interface ChatsProps {
   messages: Messages;
@@ -23,6 +26,7 @@ export const Chats: FC<ChatsProps> = ({
   onDeleteChat,
 }) => {
   const { chatId } = useParams();
+  const MessegListClass = WithClasses(MessageList);
 
   useEffect(() => {
     if (
@@ -80,7 +84,11 @@ export const Chats: FC<ChatsProps> = ({
         onAddChat={onAddChat}
         onDeleteChat={onDeleteChat}
       />
-      <MessageList messages={chatId ? messages[chatId] : []} />
+      {/* <MessageList messages={chatId ? messages[chatId] : []} /> */}
+      <MessegListClass
+        messages={chatId ? messages[chatId] : []}
+        classes={style.border}
+      />
       <Form addMessage={addMessage} />
     </>
   );
