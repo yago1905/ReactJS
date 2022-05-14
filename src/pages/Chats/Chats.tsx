@@ -8,7 +8,7 @@ import { MessageList } from '../../components/MessageList';
 import { AUTHOR } from '../../constants';
 import { WithClasses } from '../../HOC/WithClasses';
 
-import style from './Chats.module.css';
+import { style } from './Chats.module.css';
 
 interface ChatsProps {
   messages: Messages;
