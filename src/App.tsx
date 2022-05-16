@@ -1,81 +1,34 @@
-import React, { FC, useMemo, useState } from 'react';
+import React, { FC, useState, Suspense } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { Provider } from 'react-redux';
 
-import { defaultContext, ThemeContext } from './utils/ThemeContext';
-import { ChatList } from './components/ChatList';
+import { ThemeContext, defaultContext } from './utils/ThemeContext';
 import { Header } from './components/Header';
-import { AUTHOR } from './constants';
-import { Chats } from './pages/Chats/Chats';
 import { Home } from './pages/Home';
 import { Profile } from './pages/Profile';
-import { nanoid } from 'nanoid';
-import { store } from './store';
+import { ChatList } from './components/ChatList';
+import { AboutWithConnect } from './pages/About';
 
-export interface Chat {
-  id: string;
-  name: string;
-}
-
-const initialMessage: Messages = {
-  default: [
-    {
-      id: '1',
-      author: AUTHOR.USER,
-      value: 'Hello geekbrains',
-    },
-  ],
-};
-export interface Message {
-  id: string;
-  author: string;
-  value: string;
-}
-
-export interface Messages {
-  [key: string]: Message[];
-}
+const Chats = React.lazy(() =>
+  import('./pages/Chats/Chats').then((module) => ({
+    default: module.Chats,
+  }))
+);
 
 export const App: FC = () => {
-  const [messages, setMessages] = useState<Messages>(initialMessage);
   const [theme, setTheme] = useState(defaultContext.theme);
-
-  const chatList = useMemo(
-    () =>
-      Object.entries(messages).map((chat) => ({
-        id: nanoid(),
-        name: chat[0],
-      })),
-    [Object.entries(messages).length]
-  );
-
-  const onAddChat = (chat: Chat) => {
-    if (!messages[chat.name]) {
-      setMessages({
-        ...messages,
-        [chat.name]: [],
-      });
-    }
-  };
-
-  const onDeleteChat = (chatName: string) => {
-    const newMesseges: Messages = { ...messages };
-    delete newMesseges[chatName];
-    setMessages({ ...newMesseges });
-  };
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
-    <Provider store={store}>
-      <ThemeContext.Provider
-        value={{
-          theme,
-          toggleTheme,
-        }}
-      >
+    <ThemeContext.Provider
+      value={{
+        theme,
+        toggleTheme,
+      }}
+    >
+      <Suspense fallback={<div>Loading...</div>}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Header />}>
@@ -83,34 +36,17 @@ export const App: FC = () => {
               <Route path="profile" element={<Profile />} />
 
               <Route path="chats">
-                <Route
-                  index
-                  element={
-                    <ChatList
-                      chatList={chatList}
-                      onAddChat={onAddChat}
-                      onDeleteChat={onDeleteChat}
-                    />
-                  }
-                />
-                <Route
-                  path=":chatId"
-                  element={
-                    <Chats
-                      messages={messages}
-                      setMessages={setMessages}
-                      chatList={chatList}
-                      onAddChat={onAddChat}
-                      onDeleteChat={onDeleteChat}
-                    />
-                  }
-                />
+                <Route index element={<ChatList />} />
+                <Route path=":chatId" element={<Chats />} />
               </Route>
+
+              <Route path="about" element={<AboutWithConnect />} />
             </Route>
+
             <Route path="*" element={<h2>404</h2>} />
           </Routes>
         </BrowserRouter>
-      </ThemeContext.Provider>
-    </Provider>
+      </Suspense>
+    </ThemeContext.Provider>
   );
 };
