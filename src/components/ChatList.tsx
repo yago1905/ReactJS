@@ -1,11 +1,10 @@
-import React, { FC, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ListItem } from '@mui/material';
+import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addChat, deleteChat } from 'src/store/chats/actions';
-import { selectChatList } from 'src/store/chats/selectors';
 
-import style from './Chat.module.scss';
+import { selectChatList } from 'src/store/chats/selectors';
+import { addChat, deleteChat } from 'src/store/chats/slice';
 
 export const ChatList: FC = () => {
   const [name, setName] = useState('');
@@ -21,7 +20,7 @@ export const ChatList: FC = () => {
     e.preventDefault();
 
     if (name) {
-      dispatch(addChat(name));
+      dispatch(addChat({ name }));
       setName('');
     }
   };
@@ -31,13 +30,8 @@ export const ChatList: FC = () => {
       <ul>
         {chatList.map((chat) => (
           <ListItem key={chat.id}>
-            <Link className={style.title} to={`/chats/${chat.name}`}>
-              {chat.name}
-            </Link>
-            <button
-              className={style.delete}
-              onClick={() => dispatch(deleteChat(chat.name))}
-            >
+            <Link to={`/chats/${chat.name}`}>{chat.name}</Link>
+            <button onClick={() => dispatch(deleteChat({ chatId: chat.name }))}>
               x
             </button>
           </ListItem>
