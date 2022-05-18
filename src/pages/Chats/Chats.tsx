@@ -1,77 +1,47 @@
-import React, { FC, useCallback, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
-import { nanoid } from 'nanoid';
-import { Chat, Messages } from '../../App';
+import React, { FC } from 'react';
+import { MessageList } from '../../components/MessageList/MessageList';
+import { Form } from '../../components/Form/Form';
 import { ChatList } from '../../components/ChatList';
-import { Form } from '../../components/Form';
-import { MessageList } from '../../components/MessageList';
-import { AUTHOR } from '../../constants';
-import { WithClasses } from '../../HOC/WithClasses';
+import { Navigate, useParams } from 'react-router-dom';
+import { WithClasses } from 'src/HOC/WithClasses';
 
-import { style } from './Chats.module.css';
+import style from './Chats.module.css';
+import { shallowEqual, useSelector } from 'react-redux';
+import { selectChatList, selectChats } from 'src/store/chats/selectors';
 
-interface ChatsProps {
-  messages: Messages;
-  setMessages: React.Dispatch<React.SetStateAction<Messages>>;
-  chatList: Chat[];
-  onAddChat: (chats: Chat) => void;
-  onDeleteChat: (chatName: string) => void;
-}
-
-export const Chats: FC<ChatsProps> = ({
-  chatList,
-  onAddChat,
-  messages,
-  setMessages,
-  onDeleteChat,
-}) => {
+export const Chats: FC = () => {
   const { chatId } = useParams();
-  const MessegListClass = WithClasses(MessageList);
 
-  useEffect(() => {
-    if (
-      chatId &&
-      messages[chatId]?.length > 0 &&
-      messages[chatId][messages[chatId].length - 1].author !== AUTHOR.BOT
-    ) {
-      const timeout = setTimeout(() => {
-        setMessages({
-          ...messages,
-          [chatId]: [
-            ...messages[chatId],
-            {
-              id: nanoid(),
-              author: AUTHOR.BOT,
-              value: 'Im BOT',
-            },
-          ],
-        });
-      }, 1000);
+  const MessageListWithClass = WithClasses(MessageList);
 
-      return () => {
-        clearTimeout(timeout);
-      };
-    }
-  }, [chatId, messages, setMessages]);
+  const chats = useSelector(selectChats, shallowEqual);
+  const chatList = useSelector(selectChatList, shallowEqual);
 
-  const addMessage = useCallback(
-    (value: string) => {
-      if (chatId) {
-        setMessages((prevMessage) => ({
-          ...prevMessage,
-          [chatId]: [
-            ...prevMessage[chatId],
-            {
-              id: nanoid(),
-              author: AUTHOR.USER,
-              value,
-            },
-          ],
-        }));
-      }
-    },
-    [chatId, setMessages]
-  );
+  // useEffect(() => {
+  //   if (
+  //     chatId &&
+  //     chats[chatId]?.length > 0 &&
+  //     chats[chatId][chats[chatId].length - 1].author !== AUTHOR.BOT
+  //   ) {
+  //     const timeout = setTimeout(() => {
+  //       setMessages({
+  //         ...messages,
+  //         [chatId]: [
+  //           ...messages[chatId],
+  //           {
+  //             id: nanoid(),
+  //             author: AUTHOR.BOT,
+  //             value: 'Im BOT',
+  //           },
+  //         ],
+  //       });
+  //     }, 1000);
+
+  //     return () => {
+  //       clearTimeout(timeout);
+  //     };
+  //   }
+  // }, [chatId, messages, setMessages]);
 
   if (!chatList.find((chat) => chat.name === chatId)) {
     return <Navigate replace to="/chats" />;
@@ -79,17 +49,13 @@ export const Chats: FC<ChatsProps> = ({
 
   return (
     <>
-      <ChatList
-        chatList={chatList}
-        onAddChat={onAddChat}
-        onDeleteChat={onDeleteChat}
-      />
+      <ChatList />
       {/* <MessageList messages={chatId ? messages[chatId] : []} /> */}
-      <MessegListClass
-        messages={chatId ? messages[chatId] : []}
+      <MessageListWithClass
+        messages={chatId ? chats[chatId] : []}
         classes={style.border}
       />
-      <Form addMessage={addMessage} />
+      <Form />
     </>
   );
 };
