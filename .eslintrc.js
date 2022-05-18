@@ -25,6 +25,7 @@ module.exports = {
   },
   plugins: ['react', 'prettier', 'react-hooks', 'jest'],
   rules: {
+    '@typescript-eslint/no-explicit-any': 'off',
     'react-hooks/exhaustive-deps': 0,
     'react/display-name': 'off',
     'prettier/prettier': [
