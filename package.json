@@ -13,7 +13,7 @@
     "deploy:coverage": "npm run test:coverage && gh-pages -d coverage/lcov-report",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
-    "test": "jest && npm run loki:test",
+    "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage --colors",
     "loki:update": "npm run build-storybook && loki update --requireReference --reactUri file:./storybook-static",
@@ -25,9 +25,11 @@
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/material": "^5.6.1",
+    "chat_application": "^1.0.0",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
+    "react-router-dom": "^6.3.0",
     "sass": "^1.50.0",
     "sass-loader": "^12.6.0"
   },
@@ -38,12 +40,12 @@
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
     "@storybook/addon-actions": "^6.4.20",
-    "@storybook/addon-essentials": "^5.3.21",
+    "@storybook/addon-essentials": "^6.4.20",
     "@storybook/addon-interactions": "^6.4.20",
     "@storybook/addon-links": "^6.4.20",
     "@storybook/builder-webpack5": "^6.4.22",
     "@storybook/manager-webpack5": "^6.4.22",
-    "@storybook/react": "^6.1.21",
+    "@storybook/react": "^6.4.20",
     "@storybook/testing-library": "^0.0.9",
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.0.1",
@@ -87,11 +89,12 @@
   },
   "husky": {
     "hooks": {
-      
+      "pre-commit": "npm run lint",
+      "pre-push": "npm run test"
     }
   },
   "lint-staged": {
-    "*.{js,jsx,ts,tsx,html,css,scss,sass}": [
+    "*.{js,jsx,ts,tsx,css,scss,sass}": [
       "npm run lint"
     ]
   },

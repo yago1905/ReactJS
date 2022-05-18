@@ -10,7 +10,6 @@ interface MessageProps {
   message: Message;
 }
 
-// eslint-disable-next-line react/display-name
 export const MessageItem: FC<MessageProps> = memo(({ message }) => (
   <li>
     {message.author}: {message.value}
