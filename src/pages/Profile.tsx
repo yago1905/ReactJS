@@ -1,9 +1,11 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ThemeContext } from './../utils/ThemeContext';
 import { changeName, toggleProfile } from '../store/profile/slice';
 import { selectName, selectVisible } from 'src/store/profile/selectors';
+import { onValue } from 'firebase/database';
+import { userRef } from 'src/services/firebase';
 
 export const Profile: FC = () => {
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -13,6 +15,11 @@ export const Profile: FC = () => {
   const visible = useSelector(selectVisible);
   const name = useSelector(selectName);
 
+  useEffect(() => {
+    onValue(userRef, (snapshot) => {
+      const user = snapshot.val();
+    });
+  }, []);
   return (
     <>
       <h2>Profile</h2>
