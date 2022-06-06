@@ -19,7 +19,7 @@
     "loki:update": "npm run build-storybook && loki update --requireReference --reactUri file:./storybook-static",
     "loki:approve": "loki approve",
     "loki:test": "npm run build-storybook && loki test --requireReference --reactUri file:./storybook-static",
-    "chromatic": "npx chromatic --project-token=85d9ef568377"
+    "chromatic": "npx chromatic --project-token=33e9d1fd91fb"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
@@ -27,6 +27,7 @@
     "@mui/material": "^5.6.1",
     "@reduxjs/toolkit": "^1.8.1",
     "chat_application": "^1.0.0",
+    "firebase": "^9.8.1",
     "prop-types": "^15.8.1",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
@@ -38,7 +39,7 @@
   },
   "devDependencies": {
     "@babel/core": "^7.17.9",
-    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/plugin-transform-runtime": "^7.17.12",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@babel/preset-typescript": "^7.16.7",
